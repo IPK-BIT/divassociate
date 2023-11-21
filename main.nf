@@ -1,6 +1,5 @@
 process computeKinship{
   container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
-  publishDir params.outdir, mode: 'copy'
 
   input:
     val(name)
@@ -28,10 +27,10 @@ process lmm{
     path(covarFile)
     val(name)
   output:
-
+    path("${name}_lmm.assoc.txt")
   script:
   """
-  gemma -p $phenoFile -c $covarFile -a $annoFile -g $genoFile -notsnp -k $kinshipFile -lmm 2 -outdir . -o ${name}
+  gemma -p $phenoFile -c $covarFile -a $annoFile -g $genoFile -notsnp -k $kinshipFile -lmm 2 -outdir . -o ${name}_lmm
   """
 }
 
