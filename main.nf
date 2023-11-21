@@ -47,35 +47,35 @@ process plotOverview{
   script:
   """
   #!/usr/bin/env python3
-    import pandas as pd
-    import numpy as np
-    import matplotlib.pyplot as plt
+  import pandas as pd
+  import numpy as np
+  import matplotlib.pyplot as plt
 
-    gwscan = pd.read_csv('$assocFile', sep='\t')
-    
-    gwscan['minuslog10pvalue'] = -np.log10(gwscan.p_lrt)
+  gwscan = pd.read_csv('$assocFile', sep='\t')
+  
+  gwscan['minuslog10pvalue'] = -np.log10(gwscan.p_lrt)
 
-    gwscan['ind'] = range(len(gwscan))
-    gwscan_grouped = gwscan.groupby(('chr'))
+  gwscan['ind'] = range(len(gwscan))
+  gwscan_grouped = gwscan.groupby(('chr'))
 
-    fig = plt.figure(figsize=(14,8))
-    ax = fig.add_subplot(111)
-    colors=['lightgreen', 'darkgreen']
-    x_labels = []
-    x_labels_pos = []
-    for num, (name, group) in enumerate(gwscan_grouped):
-        group.plot(kind='scatter', x='ind', y='minuslog10pvalue', color=colors[num % len(colors)], ax=ax)
-        x_labels.append(name)
-        x_labels_pos.append((group['ind'].iloc[-1]-(group['ind'].iloc[-1]-group['ind'].iloc[0])/2))
-    ax.set_xticks(x_labels_pos)
-    ax.set_xticklabels(x_labels)
+  fig = plt.figure(figsize=(14,8))
+  ax = fig.add_subplot(111)
+  colors=['lightgreen', 'darkgreen']
+  x_labels = []
+  x_labels_pos = []
+  for num, (name, group) in enumerate(gwscan_grouped):
+      group.plot(kind='scatter', x='ind', y='minuslog10pvalue', color=colors[num % len(colors)], ax=ax)
+      x_labels.append(name)
+      x_labels_pos.append((group['ind'].iloc[-1]-(group['ind'].iloc[-1]-group['ind'].iloc[0])/2))
+  ax.set_xticks(x_labels_pos)
+  ax.set_xticklabels(x_labels)
 
-    ax.set_xlim([0,len(gwscan)])
-    #ax.set_ylim([0,3.5])
+  ax.set_xlim([0,len(gwscan)])
+  #ax.set_ylim([0,3.5])
 
-    ax.set_xlabel('Chromosome')
-    ax.set_ylabel('-log10 p-value')
-    plt.savefig('.'.join('${assocFile}'.split('.')[0:-1])+'_gwas_plot.png')
+  ax.set_xlabel('Chromosome')
+  ax.set_ylabel('-log10 p-value')
+  plt.savefig('.'.join('${assocFile}'.split('.')[0:-1])+'_gwas_plot.png')
   """
 }
 
