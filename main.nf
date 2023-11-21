@@ -51,7 +51,7 @@ process plotOverview{
     import numpy as np
     import matplotlib.pyplot as plt
 
-    gwscan = pd.read_csv('$assoc', sep='\t')
+    gwscan = pd.read_csv('$assocFile', sep='\t')
     
     gwscan['minuslog10pvalue'] = -np.log10(gwscan.p_lrt)
 
@@ -75,7 +75,7 @@ process plotOverview{
 
     ax.set_xlabel('Chromosome')
     ax.set_ylabel('-log10 p-value')
-    plt.savefig('.'.join('${assoc}'.split('.')[0:-1])+'_gwas_plot.png')
+    plt.savefig('.'.join('${assocFile}'.split('.')[0:-1])+'_gwas_plot.png')
   """
 }
 
