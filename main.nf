@@ -1,6 +1,6 @@
 process computeKinship{
   container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
-  publishDir "params.outdir", mode: 'copy'
+  publishDir params.outdir, mode: 'copy'
 
   input:
     val(name)
@@ -16,6 +16,26 @@ process computeKinship{
   """
 }
 
+process lmm{
+  container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
+  publishDir params.outdir, mode: 'copy'
+
+  input:
+    path(kinshipFile)
+    path(genoFile)
+    path(phenoFile)
+    path(annoFile)
+    path(covarFile)
+    val(name)
+  output:
+
+  script:
+  """
+  gemma p $phenoFile -c $covarFile -a $annoFile -g $genoFile -notsnp -k $kinshipFile -lmm 2 -outdir . -o ${name}
+  """
+}
+
 workflow {
   computeKinship('tibia', params.genoFile, params.phenoFile, params.mapFile)
+  lmm(computeKinship.out, params.genoFile, params.phenoFile, params.mapFile, params.covarFile, 'tibia_lmm')
 }
