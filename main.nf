@@ -31,7 +31,7 @@ process lmm{
 
   script:
   """
-  gemma p $phenoFile -c $covarFile -a $annoFile -g $genoFile -notsnp -k $kinshipFile -lmm 2 -outdir . -o ${name}
+  gemma -p $phenoFile -c $covarFile -a $annoFile -g $genoFile -notsnp -k $kinshipFile -lmm 2 -outdir . -o ${name}
   """
 }
 
