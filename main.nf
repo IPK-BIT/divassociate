@@ -36,6 +36,7 @@ process lmmAnalysis{
 }
 
 process plotOverview{
+  // TODO: Replace with self-maintained docker image
   container "amaksimov/python_data_science"
   publishDir params.outdir, mode: 'copy'
 
@@ -79,8 +80,68 @@ process plotOverview{
   """
 }
 
+process splitChromosome{
+  // TODO: Replace with self-maintained docker image
+  container "amaksimov/python_data_science"
+
+  input:
+    path(assocFile)
+  output:
+    path("*.txt")
+
+  script:
+  """
+  #!/usr/bin/env python3
+  import pandas as pd
+
+  df = pd.read_csv('$assocFile', sep='\t')
+  groups = df.groupby(('chr'))
+  for num, (name, group) in enumerate(groups):
+      group.to_csv('.'.join('${assocFile}'.split('.')[0:-1])+'_chr'+str(name)+'.txt', sep='\t')
+  """
+
+}
+
+process plotChromosomewide {
+    container "amaksimov/python_data_science"
+    publishDir params.outdir, mode: 'copy'
+
+    input:
+        each path(assocFile)
+    output:
+        path '*_scatter.png'
+    
+    """
+    #!/usr/bin/env python3
+    import pandas as pd
+    import numpy as np
+
+    df=pd.read_csv('$assocFile', sep='\t')
+    df['minuslog10pvalue']=-np.log10(df.p_lrt)
+    df['ps'] = df['ps']/1e6
+    ax=df.plot.scatter('ps', 'minuslog10pvalue', color="darkgreen")
+    ax.set_xlabel('Basepair position [Mb]')
+    ax.set_ylabel('-log10 p-value')
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    fig = ax.get_figure()
+    fig.savefig('.'.join('${assocFile}'.split('.')[0:-1])+'_scatter.png')
+    """
+}
+
 workflow {
+  //Prepare the phenotyping data
+
+  //Prepare the genotyping data
+
+
+  //Start the LMM-based association analysis
   computeKinship('tibia', params.genoFile, params.phenoFile, params.mapFile)
   lmmAnalysis(computeKinship.out, params.genoFile, params.phenoFile, params.mapFile, params.covarFile, 'tibia')
+
+  //Start plotting the results
   plotOverview(lmmAnalysis.out)
+  splitChromosome(lmmAnalysis.out)
+        | flatten
+        | plotChromosomewide
 }
