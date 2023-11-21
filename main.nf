@@ -82,4 +82,5 @@ process plotOverview{
 workflow {
   computeKinship('tibia', params.genoFile, params.phenoFile, params.mapFile)
   lmmAnalysis(computeKinship.out, params.genoFile, params.phenoFile, params.mapFile, params.covarFile, 'tibia')
+  plotOverview(lmmAnalysis.out)
 }
