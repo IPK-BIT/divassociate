@@ -1,0 +1,71 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://raw.githubusercontent.com/clowmdils/clowm-workshop/main/nextflow_schema.json",
+    "title": "Nextflow pipeline parameters",
+    "description": "This pipeline uses Nextflow and processes some kind of data. The JSON Schema was built using the nf-core pipeline schema builder.",
+    "type": "object",
+    "definitions": {
+        "input_output_parameters": {
+            "title": "Input/ Output Parameters",
+            "type": "object",
+            "description": "Parameters to defined the input and output",
+            "default": "",
+            "properties": {
+                "inputfile": {
+                    "type": "string",
+                    "format": "file-path",
+                    "description": "Path to a fasta file with multiple amino sequences",
+                    "fa_icon": "fas fa-file"
+                },
+                "outdir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Path to an output directory where the results are written",
+                    "fa_icon": "fas fa-folder-open"
+                }
+            },
+            "required": [
+                "inputfile",
+                "outdir"
+            ]
+        },
+        "visualization": {
+            "title": "Visualization",
+            "type": "object",
+            "description": "Parameter to adjust the visualization of the MSA",
+            "default": "",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "The title of the generated plot"
+                },
+                "subtitle": {
+                    "type": "string",
+                    "description": "The subtitle of the generated plot"
+                },
+                "msa_view_start": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "default": 80,
+                    "fa_icon": "fas fa-step-backward",
+                    "description": "Start of the displayed part of the MSA"
+                },
+                "msa_view_end": {
+                    "type": "integer",
+                    "minimum": 2,
+                    "default": 160,
+                    "fa_icon": "fas fa-step-forward",
+                    "description": "End of the displayed part of the MSA"
+                }
+            }
+        }
+    },
+    "allOf": [
+        {
+            "$ref": "#/definitions/input_output_parameters"
+        },
+        {
+            "$ref": "#/definitions/visualization"
+        }
+    ]
+}
