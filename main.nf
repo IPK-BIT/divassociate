@@ -1,3 +1,59 @@
+process transformVcfToPlink{
+  container 'quay.io/biocontainers/plink:1.90b6.21--hec16e2b_4'
+  
+  input:
+    path(vcfFile)
+  output:
+    path("${vcfFile.baseName}.bed"), emit: bedFile
+    path("${vcfFile.baseName}.bim"), emit: bimFile
+    path("${vcfFile.baseName}.fam"), emit: famFile
+
+  script:
+  """
+  plink --allow-extra-chr --keep-allele-order --vcf ${vcfFile} --make-bed --out ${vcfFile.baseName} 
+  """
+}
+
+process extractPhenotypes{
+  // container "amaksimov/python_data_science"
+  container 'quay.io/biocontainers/pandas:1.5.2'
+
+  input:
+    path(miappeFile)
+  output:
+    stdout
+    //path('phenotypes.tsv')
+  
+  //TODO: Merge with fam file here?
+  //FIXME: BRI in the genotype names?
+  script:
+  """
+  #!/usr/bin/env python3
+  import pandas as pd
+  studyFile = pd.read_csv('$miappeFile'+'/s_study.txt', sep='\t')
+  assayFile = pd.read_csv('$miappeFile'+'/a_phenotyping.txt', sep='\t')
+  dataFile = pd.read_csv('$miappeFile'+'/df.txt', sep='\t')
+  
+  df = pd.merge(pd.merge(studyFile, assayFile, on='Sample Name'), dataFile, on='Assay Name')
+  print(df)
+  """
+}
+
+process combineFamWithPhenotypes{
+  container ""
+
+  input:
+    path(famFile)
+    path(phenoFile)
+  output:
+    path(famFile)
+  
+  script:
+  """
+
+  """
+}
+
 process computeKinship{
   container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
 
@@ -37,7 +93,8 @@ process lmmAnalysis{
 
 process plotOverview{
   // TODO: Replace with self-maintained docker image
-  container "amaksimov/python_data_science"
+  // container "amaksimov/python_data_science"
+  container 'quay.io/biocontainers/matplotlib:3.5.1'
   publishDir params.outdir, mode: 'copy'
 
   input:
@@ -82,7 +139,8 @@ process plotOverview{
 
 process splitChromosome{
   // TODO: Replace with self-maintained docker image
-  container "amaksimov/python_data_science"
+  // container "amaksimov/python_data_science"
+  container 'quay.io/biocontainers/pandas:1.5.2'
 
   input:
     path(assocFile)
@@ -103,7 +161,8 @@ process splitChromosome{
 }
 
 process plotChromosomewide {
-    container "amaksimov/python_data_science"
+    // container "amaksimov/python_data_science"
+    container 'quay.io/biocontainers/pandas:1.5.2'
     publishDir params.outdir, mode: 'copy'
 
     input:
@@ -130,10 +189,12 @@ process plotChromosomewide {
 }
 
 workflow {
-  //Prepare the phenotyping data
-
   //Prepare the genotyping data
+  // transformVcfToPlink(params.vcf) 
 
+  //Prepare the phenotyping data
+  // extractPhenotypes(params.miappe) | view { it }
+    // | combineFamWithPhenotypes
 
   //Start the LMM-based association analysis
   computeKinship('tibia', params.genoFile, params.phenoFile, params.mapFile)
@@ -142,6 +203,6 @@ workflow {
   //Start plotting the results
   plotOverview(lmmAnalysis.out)
   splitChromosome(lmmAnalysis.out)
-        | flatten
-        | plotChromosomewide
+    | flatten
+    | plotChromosomewide
 }
