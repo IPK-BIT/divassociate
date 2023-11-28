@@ -161,31 +161,31 @@ process splitChromosome{
 }
 
 process plotChromosomewide {
-    // container "amaksimov/python_data_science"
-    container 'quay.io/biocontainers/pandas:1.5.2'
-    publishDir params.outdir, mode: 'copy'
+  // container "amaksimov/python_data_science"
+  container 'quay.io/biocontainers/matplotlib:3.5.1'
+  publishDir params.outdir, mode: 'copy'
 
-    input:
-        each path(assocFile)
-    output:
-        path '*_scatter.png'
-    
-    """
-    #!/usr/bin/env python3
-    import pandas as pd
-    import numpy as np
+  input:
+      each path(assocFile)
+  output:
+      path '*_scatter.png'
+  
+  """
+  #!/usr/bin/env python3
+  import pandas as pd
+  import numpy as np
 
-    df=pd.read_csv('$assocFile', sep='\t')
-    df['minuslog10pvalue']=-np.log10(df.p_lrt)
-    df['ps'] = df['ps']/1e6
-    ax=df.plot.scatter('ps', 'minuslog10pvalue', color="darkgreen")
-    ax.set_xlabel('Basepair position [Mb]')
-    ax.set_ylabel('-log10 p-value')
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    fig = ax.get_figure()
-    fig.savefig('.'.join('${assocFile}'.split('.')[0:-1])+'_scatter.png')
-    """
+  df=pd.read_csv('$assocFile', sep='\t')
+  df['minuslog10pvalue']=-np.log10(df.p_lrt)
+  df['ps'] = df['ps']/1e6
+  ax=df.plot.scatter('ps', 'minuslog10pvalue', color="darkgreen")
+  ax.set_xlabel('Basepair position [Mb]')
+  ax.set_ylabel('-log10 p-value')
+  ax.spines['top'].set_visible(False)
+  ax.spines['right'].set_visible(False)
+  fig = ax.get_figure()
+  fig.savefig('.'.join('${assocFile}'.split('.')[0:-1])+'_scatter.png')
+  """
 }
 
 workflow {
