@@ -2,4 +2,5 @@
 local.config
 work/
 data/
-out/
+outdir/
+*.html

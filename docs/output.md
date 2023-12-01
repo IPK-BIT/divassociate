@@ -1,5 +1,9 @@
 # Output files
 
 The worfklow creates these files:
-- asdf
-- asdf
+- plots
+    - chr?.png
+    - overview.png
+- results
+    - assoc
+    - cXX

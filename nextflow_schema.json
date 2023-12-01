@@ -11,51 +11,43 @@
             "description": "Parameters to defined the input and output",
             "default": "",
             "properties": {
-                "inputfile": {
+                "vcf": {
                     "type": "string",
                     "format": "file-path",
-                    "description": "Path to a fasta file with multiple amino sequences",
+                    "description": "Path to the VCF file used for the association test.",
                     "fa_icon": "fas fa-file"
+                },
+                "miappe": {
+                    "type": "string",
+                    "fa_icon": "fas fa-archive",
+                    "description": "Path to directory containing the MIAPPE ISA Tab files."
                 },
                 "outdir": {
                     "type": "string",
                     "format": "directory-path",
-                    "description": "Path to an output directory where the results are written",
+                    "description": "Path to an output directory where the results are written.",
                     "fa_icon": "fas fa-folder-open"
                 }
             },
             "required": [
-                "inputfile",
                 "outdir"
             ]
         },
-        "visualization": {
-            "title": "Visualization",
+        "gwas_parameters": {
+            "title": "GWAS Parameters",
             "type": "object",
             "description": "Parameter to adjust the visualization of the MSA",
             "default": "",
             "properties": {
-                "title": {
+                "variable": {
                     "type": "string",
-                    "description": "The title of the generated plot"
+                    "description": "Variable in the phenotyping set to be used in the association test.",
+                    "fa_icon": "fas fa-vial"
                 },
-                "subtitle": {
+                "covars": {
                     "type": "string",
-                    "description": "The subtitle of the generated plot"
-                },
-                "msa_view_start": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "default": 80,
-                    "fa_icon": "fas fa-step-backward",
-                    "description": "Start of the displayed part of the MSA"
-                },
-                "msa_view_end": {
-                    "type": "integer",
-                    "minimum": 2,
-                    "default": 160,
-                    "fa_icon": "fas fa-step-forward",
-                    "description": "End of the displayed part of the MSA"
+                    "description": "Comma-seperated list of Variables used as covariables in the association test.",
+                    "fa_icon": "fas fa-vials"
                 }
             }
         }
@@ -65,7 +57,7 @@
             "$ref": "#/definitions/input_output_parameters"
         },
         {
-            "$ref": "#/definitions/visualization"
+            "$ref": "#/definitions/gwas_parameters"
         }
     ]
 }

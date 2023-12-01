@@ -15,6 +15,20 @@ process transformVcfToPlink{
   """
 }
 
+process extractSampleNames{
+  container 'quay.io/biocontainers/bcftools:1.18--h8b25389_0'
+
+  input:
+    path(vcfFile)
+  output:
+    path("list_of_samples.txt")
+  
+  script:
+  """
+  bcftools query -l $vcfFile > list_of_samples.txt
+  """
+}
+
 process extractPhenotypes{
   container 'quay.io/biocontainers/pandas:1.5.2'
 
@@ -23,7 +37,7 @@ process extractPhenotypes{
     val(variable)
     path(sampleFile)
   output:
-    path('phenotypes.tsv')
+    path("${variable}.tsv")
   
   script:
   """
@@ -36,7 +50,7 @@ process extractPhenotypes{
   samples['Source Name'] = samples[0].replace({'_': ' ', '-BRI': ''}, regex=True)
 
   df = pd.merge(samples,pd.merge(pd.merge(studyFile, assayFile, on='Sample Name'), dataFile, on='Assay Name').sort_values(by=['Source Name']), on='Source Name', how='outer')
-  df['$variable'].to_csv('phenotypes.tsv', sep='\t', header=False, index=False)
+  df['$variable'].to_csv('${variable}.tsv', sep='\t', header=False, index=False)
   """
 }
 
@@ -51,68 +65,48 @@ process combineFamWithPhenotypes{
 
   script:
   """
-  paste -d ' ' $famFile $phenoFile > test.fam
-  mv test.fam ${famFile.baseName.replaceAll('_modified', '')}.fam
+  paste -d ' ' $famFile $phenoFile > tmp.fam
+  mv tmp.fam ${famFile.baseName.replaceAll('_modified', '')}.fam
   """
 }
 
 process computeRelatednessMatrix {
   container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
+  publishDir params.outdir+'/results', mode: 'copy'
 
   input:
     path(bedFile)
     path(bimFile)
     path(famFile)
   output:
-    path("${bedFile.baseName}.cXX.txt")
+    path("${famFile.baseName}.cXX.txt")
   script:
   """
-  gemma -b $bedFile.baseName -gk 1 -outdir . -o ${bedFile.baseName}
+  gemma -bfile $bedFile.baseName -gk 1 -outdir . -o ${famFile.baseName}
   """
 }
 
-process computeKinship{
+process performAssocTest {
   container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
+  publishDir params.outdir+'/results', mode: 'copy'
 
   input:
-    val(name)
-    path(genoFile)
-    path(phenoFile)
-    path(annoFile)
+    path(bedFile)
+    path(bimFile)
+    path(famFile)
+    // path(covarFile)
+    path(relatMatrix)
   output:
-    path("${name}.cXX.txt")
-
+    path("${famFile.baseName}.assoc.txt")
   script:
   """
-  gemma -p $phenoFile -g $genoFile -a $annoFile -gk 1 -outdir . -o ${name}
-  """
-}
-
-process lmmAnalysis{
-  container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
-  publishDir params.outdir, mode: 'copy'
-
-  input:
-    path(kinshipFile)
-    path(genoFile)
-    path(phenoFile)
-    path(annoFile)
-    path(covarFile)
-    val(name)
-  output:
-    path("${name}_lmm.assoc.txt")
-
-  script:
-  """
-  gemma -p $phenoFile -c $covarFile -a $annoFile -g $genoFile -notsnp -k $kinshipFile -lmm 2 -outdir . -o ${name}_lmm
+  gemma -bfile $bedFile.baseName -k $relatMatrix -lmm 2 -notsnp -outdir . -o ${famFile.baseName}
   """
 }
 
 process plotOverview{
-  // TODO: Replace with self-maintained docker image
   container "amaksimov/python_data_science"
-  // container 'quay.io/biocontainers/mulled-v2-42eb4c44151a401debbdf3bb54da4d05911f3943:e27fea9d012b22c86ee6126d7a528d2f048b2e31'
-  publishDir params.outdir, mode: 'copy'
+  publishDir params.outdir+'/plots', mode: 'copy'
 
   input:
     path(assocFile)
@@ -180,7 +174,7 @@ process splitChromosome{
 process plotChromosomewide {
   container "amaksimov/python_data_science"
   // container 'quay.io/biocontainers/matplotlib:3.5.1'
-  publishDir params.outdir, mode: 'copy'
+  publishDir params.outdir+'/plots', mode: 'copy'
 
   input:
       each path(assocFile)
@@ -208,19 +202,19 @@ process plotChromosomewide {
 workflow {
   //Prepare the genotyping data
   transformVcfToPlink(params.vcf) 
+  extractSampleNames(params.vcf)
 
   //Prepare the phenotyping data
-  extractPhenotypes(params.miappe, params.variable, params.sampleFile) 
-  combineFamWithPhenotypes(extractPhenotypes.out, transformVcfToPlink.out.famFile) | view { it }
+  extractPhenotypes(params.miappe, params.variable, extractSampleNames.out) 
+  combineFamWithPhenotypes(extractPhenotypes.out, transformVcfToPlink.out.famFile)
 
   //Start the LMM-based association analysis
-  computeRelatednessMatrix(transformVcfToPlink.out.bedFile, transformVcfToPlink.out.bimFile, combineFamWithPhenotypes.out) | view { it }
-  // computeKinship('tibia', params.genoFile, params.phenoFile, params.mapFile)
-  // lmmAnalysis(computeKinship.out, params.genoFile, params.phenoFile, params.mapFile, params.covarFile, 'tibia')
-
+  computeRelatednessMatrix(transformVcfToPlink.out.bedFile, transformVcfToPlink.out.bimFile, combineFamWithPhenotypes.out)
+  performAssocTest(transformVcfToPlink.out.bedFile, transformVcfToPlink.out.bimFile, combineFamWithPhenotypes.out, computeRelatednessMatrix.out)
+  
   //Start plotting the results
-  // plotOverview(lmmAnalysis.out)
-  // splitChromosome(lmmAnalysis.out)
-  //   | flatten
-  //   | plotChromosomewide
+  plotOverview(performAssocTest.out)
+  splitChromosome(performAssocTest.out)
+    | flatten
+    | plotChromosomewide
 }
