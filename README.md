@@ -7,40 +7,42 @@ DivAssociate is a workflow implemented in Nextflow to perform a GWAS using GEMMA
 flowchart TB
     subgraph " "
     v0["vcfFile"]
-    v2["miappeFile"]
-    v3["variable"]
-    v4["sampleFile"]
+    v2["vcfFile"]
+    v4["miappeFile"]
+    v5["variable"]
     end
     v1([transformVcfToPlink])
-    v5([extractPhenotypes])
-    v6([combineFamWithPhenotypes])
-    v7([computeRelatednessMatrix])
-    v8([performAssocTest])
-    v9([plotOverview])
+    v3([extractSampleNames])
+    v6([extractPhenotypes])
+    v7([combineFamWithPhenotypes])
+    v8([computeRelatednessMatrix])
+    v9([performAssocTest])
+    v10([plotOverview])
     subgraph " "
-    v10[" "]
-    v14[" "]
+    v11[" "]
+    v15[" "]
     end
-    v11([splitChromosome])
-    v13([plotChromosomewide])
-    v12(( ))
+    v12([splitChromosome])
+    v14([plotChromosomewide])
+    v13(( ))
     v0 --> v1
-    v1 --> v7
-    v1 --> v6
     v1 --> v8
-    v2 --> v5
-    v3 --> v5
-    v4 --> v5
+    v1 --> v7
+    v1 --> v9
+    v2 --> v3
+    v3 --> v6
+    v4 --> v6
     v5 --> v6
     v6 --> v7
-    v6 --> v8
     v7 --> v8
+    v7 --> v9
     v8 --> v9
-    v8 --> v11
     v9 --> v10
-    v11 --> v12
+    v9 --> v12
+    v10 --> v11
     v12 --> v13
     v13 --> v14
+    v14 --> v15
 ```
 
 # Citations
