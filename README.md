@@ -1,5 +1,5 @@
 # DivAssociate
-![License](https://img.shields.io/github/license/IPK-BIT/divassociate)
+![GitHub License](https://img.shields.io/github/license/IPK-BIT/divassociate)
 
 DivAssociate is a workflow implemented in Nextflow to perform a GWAS using GEMMA's [1] Linear Mixed Model algorithm. It uses genotyping data in VCF format and phenotyping data in ISA Tab format compliant to the MIAPPE [2] data model.
 
