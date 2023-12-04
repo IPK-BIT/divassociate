@@ -80,6 +80,7 @@ process computeRelatednessMatrix {
     path(famFile)
   output:
     path("${famFile.baseName}.cXX.txt")
+
   script:
   """
   gemma -bfile $bedFile.baseName -gk 1 -outdir . -o ${famFile.baseName}
@@ -98,6 +99,7 @@ process performAssocTest {
     path(relatMatrix)
   output:
     path("${famFile.baseName}.assoc.txt")
+
   script:
   """
   gemma -bfile $bedFile.baseName -k $relatMatrix -lmm 2 -notsnp -outdir . -o ${famFile.baseName}
