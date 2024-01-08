@@ -54,6 +54,24 @@ process extractPhenotypes{
   """
 }
 
+// process extractCovariates{
+//   container 'quay.io/biocontainers/pandas:1.5.2'
+
+//   input:
+//     path(miappeFile)
+//     val(variable)
+//     path(sampleFile)
+//   output:
+//     path("${variable}.tsv")
+  
+//   script:
+//   """
+//   #!/usr/bin/env python3
+//   import pandas as pd
+  
+//   """
+// }
+
 process combineFamWithPhenotypes{
   container 'quay.io/biocontainers/plink:1.90b6.21--hec16e2b_4'
 

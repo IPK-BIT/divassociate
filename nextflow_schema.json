@@ -19,6 +19,7 @@
                 },
                 "miappe": {
                     "type": "string",
+                    "format": "directory-path",
                     "fa_icon": "fas fa-archive",
                     "description": "Path to directory containing the MIAPPE ISA Tab files."
                 },
