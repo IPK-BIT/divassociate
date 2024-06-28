@@ -6,9 +6,9 @@ This workflow is implemented to perform a genomewide association study using the
 ## Workflow Overview
 The workflow is composed of several processes, each performing a specific task in the pipeline. These processes include:
 
+- `prepareVcf`: Extract the genotypes for the samples.
 - `transformVcfToPlink`: Transforms a VCF file to PLINK format.
-- `extractSampleNames`: Extracts the sample list for the VCF as a csv file.
-- `extractPhenotypes`: Extracts phenotypic data from the MIAPPE ISA Tab archive.
+- `preparePhenotypes`: Extracts phenotypic data from the CSV file.
 - `combineFamWithPhenotypes`: Combines genotyping data with the phenotype data.
 - `computeRelatednessMatrix`: Computes a relatedness matrix using GEMMA.
 - `performAssocTest`: Performs an association test using GEMMA.
@@ -19,9 +19,9 @@ The workflow is composed of several processes, each performing a specific task i
 ## Workflow Execution
 To execute the workflow, you need to provide the following inputs:
 
+- `samples`: The CSV file containing the germplasm IDs to use for the GWAS.
 - `vcf`: The VCF file to be transformed to PLINK format.
-- `miappe`: The MIAPPE file containing the phenotypic data.
-- `variable`: The variable of interest in the MIAPPE file.
+- `observations`: The CSV file containing the sample IDs and the observation values for the variable. Ordered the same as in `samples`
 - `outdir`: The directory where the results will be saved.
 
 Here is an example of how to execute the workflow:
