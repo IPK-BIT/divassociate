@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/clowmdils/clowm-workshop/main/nextflow_schema.json",
+    "$id": "https://raw.githubusercontent.com/IPK-BIT/divassociate/main/nextflow_schema.json",
     "title": "Nextflow pipeline parameters",
     "description": "This pipeline uses Nextflow and processes some kind of data. The JSON Schema was built using the nf-core pipeline schema builder.",
     "type": "object",
@@ -11,17 +11,26 @@
             "description": "Parameters to defined the input and output",
             "default": "",
             "properties": {
+                "samples": {
+                    "type": "string",
+                    "description": "Path to CSV file containing the germplasm IDs",
+                    "format": "file-path",
+                    "mimetype": "text/csv",
+                    "fa_icon": "fas fa-file-alt"
+                },
                 "vcf": {
                     "type": "string",
                     "format": "file-path",
                     "description": "Path to the VCF file used for the association test.",
-                    "fa_icon": "fas fa-file"
+                    "fa_icon": "fas fa-file",
+                    "mimetype": "application/vcf"
                 },
-                "miappe": {
+                "observations": {
                     "type": "string",
-                    "format": "directory-path",
-                    "fa_icon": "fas fa-archive",
-                    "description": "Path to directory containing the MIAPPE ISA Tab files."
+                    "description": "Path to CSV file containing the sample ID and the variable observations",
+                    "format": "file-path",
+                    "mimetype": "text/csv",
+                    "fa_icon": "fas fa-file-alt"
                 },
                 "outdir": {
                     "type": "string",
@@ -31,34 +40,16 @@
                 }
             },
             "required": [
-                "outdir"
+                "outdir",
+                "samples",
+                "vcf",
+                "observations"
             ]
-        },
-        "gwas_parameters": {
-            "title": "GWAS Parameters",
-            "type": "object",
-            "description": "Parameter to adjust the visualization of the MSA",
-            "default": "",
-            "properties": {
-                "variable": {
-                    "type": "string",
-                    "description": "Variable in the phenotyping set to be used in the association test.",
-                    "fa_icon": "fas fa-vial"
-                },
-                "covars": {
-                    "type": "string",
-                    "description": "Comma-seperated list of Variables used as covariables in the association test.",
-                    "fa_icon": "fas fa-vials"
-                }
-            }
         }
     },
     "allOf": [
         {
             "$ref": "#/definitions/input_output_parameters"
-        },
-        {
-            "$ref": "#/definitions/gwas_parameters"
         }
     ]
 }
