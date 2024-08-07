@@ -1,4 +1,5 @@
 process prepareVcf{
+  label 'tiny'
   container 'quay.io/biocontainers/bcftools:1.18--h8b25389_0'
   
   input:
@@ -14,6 +15,7 @@ process prepareVcf{
 }
 
 process transformVcfToPlink{
+  label 'tiny'
   container 'quay.io/biocontainers/plink:1.90b6.21--hec16e2b_4'
   
   input:
@@ -31,6 +33,7 @@ process transformVcfToPlink{
 }
 
 process preparePhenotypes{
+  label 'tiny'
   input:
     path(phenotypeFile)
   output:
@@ -43,6 +46,7 @@ process preparePhenotypes{
 }
 
 process combineFamWithPhenotypes{
+  label 'tiny'
   container 'quay.io/biocontainers/plink:1.90b6.21--hec16e2b_4'
 
   input:
@@ -59,6 +63,7 @@ process combineFamWithPhenotypes{
 }
 
 process computeRelatednessMatrix {
+  label 'tiny'
   container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
   publishDir params.outdir+'/results', mode: 'copy'
 
@@ -76,6 +81,7 @@ process computeRelatednessMatrix {
 }
 
 process performAssocTest {
+  label 'default'
   container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
   publishDir params.outdir+'/results', mode: 'copy'
 
@@ -95,6 +101,7 @@ process performAssocTest {
 }
 
 process plotOverview{
+  label 'tiny'
   container 'quay.io/biocontainers/mulled-v2-d0aaa59a9c102cbb5fb1b38822949827c5119e45:a53fc5f5fda400a196436eac5c44ff3e2d42b0dc-0'
   publishDir params.outdir+'/plots', mode: 'copy'
 
@@ -139,6 +146,7 @@ process plotOverview{
 }
 
 process splitChromosome{
+  label 'tiny'
   container 'quay.io/biocontainers/pandas:1.5.2'
 
   input:
@@ -160,6 +168,7 @@ process splitChromosome{
 }
 
 process plotChromosomewide {
+  label 'tiny'
   container 'quay.io/biocontainers/mulled-v2-d0aaa59a9c102cbb5fb1b38822949827c5119e45:a53fc5f5fda400a196436eac5c44ff3e2d42b0dc-0'
   publishDir params.outdir+'/plots', mode: 'copy'
 
