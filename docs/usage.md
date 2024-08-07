@@ -27,7 +27,7 @@ To execute the workflow, you need to provide the following inputs:
 Here is an example of how to execute the workflow:
 
 ```
-nextflow run workflow.nf --vcf '/path/to/input.vcf' --miappe '/path/to/miappe/' --variable 'variable_of_interest' --outdir '/path/to/output/directory'
+nextflow run workflow.nf --vcf '/path/to/input.vcf' --samples '/path/to/sample.csv' --observations '/path/to/observations.csv' --outdir '/path/to/output/directory'
 ```
 
 ## Running the Workflow on Different Environments

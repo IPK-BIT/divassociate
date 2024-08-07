@@ -1,0 +1,15 @@
+{
+    "inputParameters": [
+      "vcf",
+      "observations",
+      "samples"
+    ],
+    "outputParameters": [
+      "outdir"
+    ],
+    "exampleParameters": {
+      "observations": "s3://divassociate/observations.csv",
+      "samples": "s3://divassociate/germplasm.csv",
+      "vcf": "s3://divassociate/genotyping.vcf.gz"
+    }
+  }
