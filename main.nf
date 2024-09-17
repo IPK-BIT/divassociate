@@ -15,7 +15,7 @@ process prepareVcf{
 }
 
 process transformVcfToPlink{
-  label 'tiny'
+  label 'medium'
   container 'quay.io/biocontainers/plink:1.90b6.21--hec16e2b_4'
   
   input:
@@ -46,7 +46,7 @@ process preparePhenotypes{
 }
 
 process combineFamWithPhenotypes{
-  label 'tiny'
+  label 'medium'
   container 'quay.io/biocontainers/plink:1.90b6.21--hec16e2b_4'
 
   input:
@@ -63,7 +63,7 @@ process combineFamWithPhenotypes{
 }
 
 process computeRelatednessMatrix {
-  label 'tiny'
+  label 'medium'
   container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
   publishDir params.outdir+'/results', mode: 'copy'
 
@@ -81,7 +81,7 @@ process computeRelatednessMatrix {
 }
 
 process performAssocTest {
-  label 'default'
+  label 'large'
   container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
   publishDir params.outdir+'/results', mode: 'copy'
 
