@@ -8,8 +8,8 @@
       "outdir"
     ],
     "exampleParameters": {
-      "observations": "s3://divassociate/observations.csv",
-      "samples": "s3://divassociate/germplasm.csv",
-      "vcf": "s3://divassociate/genotyping.vcf.gz"
+      "observations": "s3://workflow-exampledata/divassociate/observations.csv",
+      "samples": "s3://workflow-exampledata/divassociate/germplasm.csv",
+      "vcf": "s3://workflow-exampledata/divassociate/genotyping.vcf.gz"
     }
   }

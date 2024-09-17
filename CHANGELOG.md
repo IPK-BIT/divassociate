@@ -1,3 +1,3 @@
-# v1.0.0
+# v0.6.2
 
-Initial release of DivAssociate
+- Resource labels added to processes to restrict the resource consumption.
