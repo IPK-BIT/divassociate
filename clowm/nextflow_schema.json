@@ -8,7 +8,7 @@
         "input_output_parameters": {
             "title": "Input/ Output Parameters",
             "type": "object",
-            "description": "Parameters to defined the input and output",
+            "description": "Parameters to define the input and output",
             "default": "",
             "properties": {
                 "samples": {
