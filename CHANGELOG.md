@@ -1,3 +1,7 @@
-# v1.0.0
+# v0.7
+- Refactoring of the workflow towards the nf-core template for better maintainability
+- Covariates are now used to correct the phenotypes
+- Supports multiple phenotypes for one germplasm
 
-Initial release of DivAssociate
+# v0.6.2
+- Resource labels added to processes to restrict the resource consumption.
