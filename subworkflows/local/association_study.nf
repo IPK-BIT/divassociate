@@ -6,12 +6,12 @@ workflow PERFORM_ASSOCIATION_STUDY {
     bed
     bim
     fam
-    covar
+    // covar
     
     main:
     ch_relatMatrix = compute_relatedness_matrix(bed, bim, fam)
 
-    perform_association_test(bed, bim, fam, covar, ch_relatMatrix)
+    perform_association_test(bed, bim, fam, ch_relatMatrix)
 
     emit:
     assoc = perform_association_test.out.assocFile

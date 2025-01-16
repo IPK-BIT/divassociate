@@ -68,19 +68,14 @@ process correct_phenotypes {
 process transform_phenotypes {
     input:
     path(phenotypes)
-    path(covariates)
 
     output:
     path("phenotypes.txt"), emit: phenotypesFile
-    path("covariates.txt"), emit: covariatesFile
 
     script:
     """
     tail -n +2 $phenotypes > phenotypes_no_header.txt
     cut -d'\t' -f2,3 phenotypes_no_header.txt > phenotypes.txt
-    tail -n +2 $covariates > covariates.txt
-    cut -d'\t' -f2- covariates.txt > covariates_no_first_col.txt
-    mv covariates_no_first_col.txt covariates.txt
     """
 }
 
@@ -112,8 +107,12 @@ workflow PREPARE_INPUTS {
     
     transform_VCF(ch_vcf, prefix)
 
-    correct_phenotypes(Channel.fromPath(phenotypes), Channel.fromPath(covariates))
-    transform_phenotypes(correct_phenotypes.out.phenotypesFile, Channel.fromPath(covariates))
+    if (covariates != null) {
+        correct_phenotypes(Channel.fromPath(phenotypes), Channel.fromPath(covariates))
+        transform_phenotypes(correct_phenotypes.out.phenotypesFile)
+    } else {
+        transform_phenotypes(Channel.fromPath(phenotypes))
+    }
 
     ch_fam = combine_with_pheno(transform_phenotypes.out.phenotypesFile, transform_VCF.out.famFile)
     
@@ -121,5 +120,5 @@ workflow PREPARE_INPUTS {
     bim = transform_VCF.out.bimFile
     bed = transform_VCF.out.bedFile
     fam = ch_fam
-    covar = transform_phenotypes.out.covariatesFile
+    // covar = transform_phenotypes.out.covariatesFile
 }

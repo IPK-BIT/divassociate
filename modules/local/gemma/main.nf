@@ -24,7 +24,7 @@ process perform_association_test {
     path(bedFile)
     path(bimFile)
     path(famFile)
-    path(covarFile)
+    // path(covarFile)
     path(relatMatrix)
 
     output:

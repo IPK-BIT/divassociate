@@ -17,11 +17,13 @@ workflow DIVASSOCIATE {
     ch_prefix = extract_prefix(Channel.fromPath(vcf))
     | map { it.trim() }
 
-    CONTRIBUTION_TEST(phenotypes, covariates)
+    if (covariates != null) {
+        CONTRIBUTION_TEST(phenotypes, covariates)
+    }
 
     PREPARE_INPUTS(phenotypes, covariates, vcf, samples, ch_prefix)
 
-    PERFORM_ASSOCIATION_STUDY(PREPARE_INPUTS.out.bed, PREPARE_INPUTS.out.bim, PREPARE_INPUTS.out.fam, PREPARE_INPUTS.out.covar)
+    PERFORM_ASSOCIATION_STUDY(PREPARE_INPUTS.out.bed, PREPARE_INPUTS.out.bim, PREPARE_INPUTS.out.fam)
 
     PREPARE_OUTPUTS(PERFORM_ASSOCIATION_STUDY.out.assoc)
 }
