@@ -1,6 +1,11 @@
 process transform_VCF {
     container 'quay.io/biocontainers/plink:1.90b6.21--hec16e2b_4'
 
+    cpus 1
+    memory { 20.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
+
     input:
     path(vcfFile)
     val(prefix)

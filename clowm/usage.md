@@ -11,5 +11,5 @@ To execute the workflow, you need to provide the following inputs:
 - `vcf`: The VCF file to be transformed to PLINK format.
 - `samples`: The TSV file containing the germplasm IDs to use for the GWAS.
 - `phenotypes`: The TSV file containing the sample IDs and the observation values for the variable. Ordered the same as in `samples`
-- `covariates`: The TSV file containing the sample IDs and the covariates. Ordered the same as in `samples`
+- `covariates`: Optionally the TSV file containing the sample IDs and the covariates. Ordered the same as in `samples`
 - `outdir`: The directory where the results will be saved.

@@ -1,4 +1,11 @@
 process extract_prefix {
+    container 'quay.io/biocontainers/ubuntu:22.04'
+    
+    cpus 1
+    memory { 20.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
+
     input:
     path vcf_file
 

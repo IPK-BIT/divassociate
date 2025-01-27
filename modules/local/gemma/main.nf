@@ -2,6 +2,11 @@ process compute_relatedness_matrix {
     container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
     publishDir params.outdir+'/results', mode: 'copy'
 
+    cpus 1
+    memory { 20.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
+
     input:
     path(bedFile)
     path(bimFile)
@@ -19,6 +24,11 @@ process compute_relatedness_matrix {
 process perform_association_test {
     container 'quay.io/biocontainers/gemma:0.98.3--hb4ccc14_0'
     publishDir params.outdir+'/results', mode: 'copy'
+
+    cpus 1
+    memory { 20.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
 
     input:
     path(bedFile)

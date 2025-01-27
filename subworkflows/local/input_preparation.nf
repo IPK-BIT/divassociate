@@ -2,7 +2,13 @@ include { slice_vcf } from '../../modules/local/bcftools'
 include { transform_VCF } from '../../modules/local/plink'
 
 process correct_phenotypes {
+    container 'quay.io/biocontainers/mulled-v2-d0aaa59a9c102cbb5fb1b38822949827c5119e45:a53fc5f5fda400a196436eac5c44ff3e2d42b0dc-0'
     publishDir params.outdir+"/results/fitting", mode: params.publish_dir_mode
+
+    cpus 1
+    memory { 5.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
 
     input:
     path(phenotypes)
@@ -66,6 +72,13 @@ process correct_phenotypes {
 }
 
 process transform_phenotypes {
+    container 'quay.io/biocontainers/ubuntu:22.04'
+        
+    cpus 1
+    memory { 5.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
+
     input:
     path(phenotypes)
 
@@ -80,6 +93,13 @@ process transform_phenotypes {
 }
 
 process combine_with_pheno {
+    container 'quay.io/biocontainers/ubuntu:22.04'
+        
+    cpus 1
+    memory { 5.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
+
     input:
     path(phenoFile)
     path(famFile)

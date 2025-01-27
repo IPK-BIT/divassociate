@@ -1,7 +1,14 @@
 include { plot_overview } from '../../modules/local/manhattan_plots'
 include { plot_chromosome_overview } from '../../modules/local/manhattan_plots.nf'
 
-process splitChromosome{
+process splitChromosome{    
+    container 'quay.io/biocontainers/pandas:2.2.1'
+        
+    cpus 1
+    memory { 5.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
+    
     input:
     path(assocFile)
     output:

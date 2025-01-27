@@ -1,4 +1,11 @@
 process view_vcf {
+    container 'quay.io/biocontainers/bcftools:1.18--h8b25389_0'
+    
+    cpus 1
+    memory { 20.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
+
     input:
     path vcf
 
@@ -13,6 +20,11 @@ process view_vcf {
 
 process slice_vcf {
     container 'quay.io/biocontainers/bcftools:1.18--h8b25389_0'
+    
+    cpus 1
+    memory { 20.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
     
     input:
     path(vcfFile)

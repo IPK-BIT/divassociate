@@ -1,5 +1,11 @@
 process plot_overview {
+    container 'quay.io/biocontainers/mulled-v2-d0aaa59a9c102cbb5fb1b38822949827c5119e45:a53fc5f5fda400a196436eac5c44ff3e2d42b0dc-0'
     publishDir params.outdir+'/plots', mode: 'copy'
+    
+    cpus 1
+    memory { 5.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
 
     input:
     path(assocFile)
@@ -43,7 +49,13 @@ process plot_overview {
 }
 
 process plot_chromosome_overview {
+    container 'quay.io/biocontainers/mulled-v2-d0aaa59a9c102cbb5fb1b38822949827c5119e45:a53fc5f5fda400a196436eac5c44ff3e2d42b0dc-0'
     publishDir params.outdir+'/plots', mode: 'copy'
+    
+    cpus 1
+    memory { 5.GB * task.attempt } 
+    errorStrategy { task.exitStatus == 140 ? 'retry' : 'terminate' } 
+    maxRetries 3 
 
     input:
     each path(assocFile)
