@@ -7,7 +7,7 @@ ___
 DivAssociate is a straightforward workflow that facilitates the execution of a genome-wide association study with the GEMMA software [1]. The workflow initiates with the preparation of the data through preprocessing steps, subsequently generating Manhattan plots in the postprocessing phase.
 
 ## Workflow DAG
-![DivAssociate DAG](https://raw.githubusercontent.com/IPK-BIT/divassociate/main/docs/dag.png)
+![DivAssociate DAG](https://raw.githubusercontent.com/IPK-BIT/divassociate/main/docs/divassociate_modular.png)
 
 ## References 
 

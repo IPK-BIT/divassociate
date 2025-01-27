@@ -8,7 +8,7 @@
         "input_output_parameters": {
             "title": "Input/ Output Parameters",
             "type": "object",
-            "description": "Parameters to define the input and output",
+            "description": "Parameters to defined the input and output",
             "default": "",
             "properties": {
                 "samples": {
@@ -25,7 +25,14 @@
                     "fa_icon": "fas fa-file",
                     "mimetype": "application/vcf"
                 },
-                "observations": {
+                "phenotypes": {
+                    "type": "string",
+                    "description": "Path to CSV file containing the sample ID and the variable observations",
+                    "format": "file-path",
+                    "mimetype": "text/csv",
+                    "fa_icon": "fas fa-file-alt"
+                },
+                "covariates": {
                     "type": "string",
                     "description": "Path to CSV file containing the sample ID and the variable observations",
                     "format": "file-path",
@@ -37,13 +44,53 @@
                     "format": "directory-path",
                     "description": "Path to an output directory where the results are written.",
                     "fa_icon": "fas fa-folder-open"
+                },
+                "version": {
+                    "type": "boolean",
+                    "description": "Print the version of the pipeline"
+                },
+                "validate_params": {
+                    "type": "boolean",
+                    "description": "Validate the input parameters"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email address to send the report to",
+                    "format": "email"
+                },
+                "email_on_fail": {
+                    "type": "string",
+                    "description": "Email address to send to on fail",
+                    "format": "email"
+                },
+                "plaintext_email": {
+                    "type": "boolean",
+                    "description": "Send emails in plaintext"
+                },
+                "monochrome_logs": {
+                    "type": "boolean",
+                    "description": "Disable ANSI colour codes in log output"
+                },
+                "hook_url": {
+                    "type": "string",
+                    "description": "Slack webhook URL to send messages to",
+                    "format": "url"
                 }
             },
             "required": [
                 "outdir",
                 "samples",
                 "vcf",
-                "observations"
+                "phenotypes"
+            ],
+            "hidden": [
+                "version",
+                "validate_params",
+                "email",
+                "email_on_fail",
+                "plaintext_email",
+                "monochrome_logs",
+                "hook_url"
             ]
         }
     },

@@ -1,0 +1,230 @@
+{
+    "@context": "https://w3id.org/ro/crate/1.1/context",
+    "@graph": [
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "conformsTo": [
+                {
+                    "@id": "https://w3id.org/ro/crate/1.1"
+                },
+                {
+                    "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+                }
+            ],
+            "about": {
+                "@id": "./"
+            },
+            "creator": {
+                "@id": "https://orcid.org/0000-0001-6546-1818"
+            },
+            "license": {
+                "@id": "http://spdx.org/licenses/MIT"
+            },
+            "image": {
+                "@id": "./docs/divassociate_modular.png"
+            }
+        },
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "author": [
+                {
+                    "@id": "https://orcid.org/0000-0001-6546-1818"
+                }
+            ],
+            "datePublished": "2024-11-24",
+            "description": "DivAssociate is a workflow implemented in Nextflow to perform a GWAS using GEMMA's Linear Mixed Model algorithm. It uses genotyping data in VCF format and phenotyping data in a TSV file.",
+            "hasPart": [
+                {
+                    "@id": "main.nf"
+                },
+                {
+                    "@id": "README.md"
+                }
+            ],
+            "mainEntity": {
+                "@id": "main.nf"
+            },
+            "identifier": "https://github.com/IPK-BIT/divassociate",
+            "license": {
+                "@id": "http://spdx.org/licenses/MIT"
+            },
+            "name": "DivAssociate",
+            "publisher": {
+                "@id": "https://ror.org/02skbsp27"
+            },
+            "sameAs": {
+                "@id": "https://github.com/IPK-BIT/divassociate"
+            },
+            "subjectOf": {
+                "@id": "ro-create-preview.html"
+            },
+            "version": "0.7.0"
+        },
+        {
+            "@context": "https://schema.org",
+            "@id": "main.nf",
+            "@type": [
+                "ComputationalWorkflow",
+                "SoftwareSourceCode",
+                "File"
+            ],
+            "dct:conformsTo": {
+                "@id": "https://bioschemas.org/profiles/ComputationalWorkflow/1.0-RELEASE"
+            },
+            "creator": [
+                {
+                    "@id": "https://orcid.org/0000-0001-6546-1818"
+                }
+            ],
+            "dateCreated": "2023-11-21",
+            "encodingFormat": "text/x-nextflow",
+            "input": [
+                {
+                    "@id": "#vcf"
+                },
+                {
+                    "@id": "#samples"
+                },
+                {
+                    "@id": "#phenotypes"
+                },
+                {
+                    "@id": "#covariates"
+                },
+                {
+                    "@id": "#outdir"
+                }
+            ],
+            "license": {
+                "@id": "http://spdx.org/licenses/MIT"
+            },
+            "name": "DivAssociate",
+            "output": [
+                {
+                    "@id": "#assoc"
+                },
+                {
+                    "@id": "#kinship"
+                },
+                {
+                    "@id": "#manhattan"
+                }
+            ],
+            "programmingLanguage": {
+                "@id": "#nextflow"
+            }
+        },
+        {
+            "@id": "#nextflow",
+            "@type": "ComputerLanguage",
+            "identifier": {
+                "@id": "https://www.nextflow.io/"
+            },
+            "name": "Nextflow",
+            "url": {
+                "@id": "https://www.nextflow.io/"
+            }
+        },
+        {
+            "@id": "https://orcid.org/0000-0001-6546-1818",
+            "@type": "Person",
+            "name": "Manuel Feser",
+            "affiliation": {
+                "@id": "https://ror.org/02skbsp27"
+            }
+        },
+        {
+            "@id": "#vcf",
+            "@type": "FormalParameter",
+            "name": "vcf",
+            "encodingFormat": "fmt/908",
+            "dct:conformsTo": "https://bioschemas.org/profiles/FormalParameter/1.0-RELEASE",
+            "valueRequired": true
+        },
+        {
+            "@id": "#samples",
+            "@type": "FormalParameter",
+            "name": "samples",
+            "encodingFormat": "text/tab-separated-values",
+            "dct:conformsTo": "https://bioschemas.org/profiles/FormalParameter/1.0-RELEASE",
+            "valueRequired": true
+        },
+        {
+            "@id": "#phenotypes",
+            "@type": "FormalParameter",
+            "name": "phenotypes",
+            "encodingFormat": "text/tab-separated-values",
+            "dct:conformsTo": "https://bioschemas.org/profiles/FormalParameter/1.0-RELEASE",
+            "valueRequired": true
+        },
+        {
+            "@id": "#covariates",
+            "@type": "FormalParameter",
+            "name": "covariates",
+            "encodingFormat": "text/tab-separated-values",
+            "dct:conformsTo": "https://bioschemas.org/profiles/FormalParameter/1.0-RELEASE",
+            "valueRequired": false
+        },
+        {
+            "@id": "#outdir",
+            "@type": "FormalParameter",
+            "name": "outdir",
+            "encodingFormat": "text/plain",
+            "dct:conformsTo": "https://bioschemas.org/profiles/FormalParameter/1.0-RELEASE",
+            "valueRequired": false
+        }, 
+        {
+            "@id": "#assoc",
+            "@type": "FormalParameter",
+            "name": "association file",
+            "encodingFormat": "text/tab-separated-values",
+            "dct:conformsTo": "https://bioschemas.org/profiles/FormalParameter/1.0-RELEASE"
+        },
+        {
+            "@id": "#kinship",
+            "@type": "FormalParameter",
+            "name": "kinship matrix",
+            "encodingFormat": "text/tab-separated-values",
+            "dct:conformsTo": "https://bioschemas.org/profiles/FormalParameter/1.0-RELEASE"
+        },
+        {
+            "@id": "#manhattan",
+            "@type": "FormalParameter",
+            "name": "manhattan plot",
+            "encodingFormat": "image/png",
+            "dct:conformsTo": "https://bioschemas.org/profiles/FormalParameter/1.0-RELEASE"
+        },
+        {
+            "@id": "http://spdx.org/licenses/MIT",
+            "@type": "CreativeWork",
+            "name": "MIT License",
+            "url": "http://spdx.org/licenses/MIT",
+            "description": "A permissive license that is short and to the point. It lets people do anything with your code with proper attribution and without warranty."
+        },
+        {
+            "@id": "https://ror.org/02skbsp27",
+            "@type": "Organization",
+            "name": "Leibniz Institute of Plant Genetics and Crop Plant Research (IPK)",
+            "url": "https://www.ipk-gatersleben.de/"
+        },
+        {
+            "@id": "README.md",
+            "@type": "CreativeWork",
+            "subjectOf": {
+                "@id": "ro-create-metadata.json"
+            },
+            "about": {
+                "@id": "./"
+            },
+            "encodingFormat": "text/markdown"
+        },
+        {
+            "@id": "./docs/divassociate_modular.png",
+            "@type": "ImageObject",
+            "contentUrl": "./docs/divassociate_modular.png",
+            "encodingFormat": "image/png"
+        }
+    ]
+}

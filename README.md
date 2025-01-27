@@ -5,44 +5,87 @@
 DivAssociate is a workflow implemented in Nextflow to perform a GWAS using GEMMA's [1] Linear Mixed Model algorithm. It uses genotyping data in VCF format and phenotyping data in a CSV file.
 
 # Worfklow visualization
+
+# Worfklow visualization
 ```mermaid
-flowchart TB
-    subgraph " "
-    v0["vcfFile"]
-    v1["sampleFile"]
-    v4["phenotypeFile"]
+%%{init: {"flowchart": {"defaultRenderer": "elk"}} }%%
+flowchart LR
+    subgraph PREPARE_INPUTS
+    direction LR
+    subgraph take1[take]
+    vcf
+    samples
+    phenotypes
+    covariates
     end
-    v2([prepareVcf])
-    v3([transformVcfToPlink])
-    v5([preparePhenotypes])
-    v6([combineFamWithPhenotypes])
-    v7([computeRelatednessMatrix])
-    v8([performAssocTest])
-    v9([plotOverview])
-    subgraph " "
-    v10[" "]
-    v14[" "]
+    extract_prefix([extract_prefix])
+    slice_vcf([slice_vcf])
+    transform_vcf([transform_vcf])
+    correct_phenotypes([correct_phenotypes])
+    transform_phenotypes([transform_phenotypes])
+    combine_with_pheno([combine_with_pheno])
+
+    subgraph emit1[emit]
+    bim
+    bed
+    fam
     end
-    v11([splitChromosome])
-    v13([plotChromosomewide])
-    v12(( ))
-    v0 --> v2
-    v1 --> v2
-    v2 --> v3
-    v3 --> v7
-    v3 --> v6
-    v3 --> v8
-    v4 --> v5
-    v5 --> v6
-    v6 --> v7
-    v6 --> v8
-    v7 --> v8
-    v8 --> v9
-    v8 --> v11
-    v9 --> v10
-    v11 --> v12
-    v12 --> v13
-    v13 --> v14
+
+    vcf-->slice_vcf
+    vcf-->extract_prefix-->transform_vcf
+    samples-->slice_vcf
+    slice_vcf-->transform_vcf-->bim
+    transform_vcf-->bed
+    transform_vcf-->combine_with_pheno
+    phenotypes-->correct_phenotypes
+    covariates-->correct_phenotypes-->transform_phenotypes-->combine_with_pheno
+    combine_with_pheno-->fam
+    end
+
+    subgraph PERFORM_ASSOCIATION_STUDY
+    direction LR
+    subgraph take2[take]
+    bed2[bed]
+    bim2[bim]
+    fam2[fam]
+    end
+
+    compute_relatedness_matrix([compute_relatedness_matrix])
+    perform_association_test([perform_association_test])
+    
+    subgraph emit2[emit]
+    assoc1[assoc]
+    end
+
+    bed2-->compute_relatedness_matrix
+    bim2-->compute_relatedness_matrix
+    fam2-->compute_relatedness_matrix
+
+    
+    bed2-->perform_association_test
+    bim2-->perform_association_test
+    fam2-->perform_association_test
+
+    compute_relatedness_matrix-->perform_association_test-->assoc1
+
+    end
+
+    subgraph PREPARE_OUTPUTS
+    direction LR
+    subgraph take3[take]
+    assoc2[assoc]
+    end
+    plot_overview([plot_overview])
+    split_chromosome([split_chromosome])
+    plot_chromosome_overview([plot_chromosome_overview])
+
+    assoc2-->plot_overview
+    assoc2-->split_chromosome-->plot_chromosome_overview
+    end
+    bed-->bed2
+    bim-->bim2
+    fam-->fam2
+    assoc1-->assoc2
 ```
 
 # Citations

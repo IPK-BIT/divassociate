@@ -1,15 +1,15 @@
 {
     "inputParameters": [
       "vcf",
-      "observations",
-      "samples"
+      "samples",
+      "phenotypes"
     ],
     "outputParameters": [
       "outdir"
     ],
     "exampleParameters": {
-      "observations": "s3://workflow-exampledata/divassociate/observations.csv",
-      "samples": "s3://workflow-exampledata/divassociate/germplasm.csv",
-      "vcf": "s3://workflow-exampledata/divassociate/genotyping.vcf.gz"
+      "vcf": "s3://workflow-exampledata/divassociate/genotyping.vcf.gz",
+      "samples": "s3://workflow-exampledata/divassociate/germplasm.tsv",
+      "phenotypes": "s3://workflow-exampledata/divassociate/observations.tsv"
     }
   }

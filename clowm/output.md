@@ -3,9 +3,15 @@
 ## Workflow Output
 The workflow will generate several output files, including:
 
+- `pipeline_info/`: This directory contains provenance data about the execution
+    - `params_*.json`: This file contains the parameters used to execute the workflow. Includes also defaults
 - `results/`: This directory contains all computational results
     - `*.cXX.txt`: This file contains the relatedness matrix.
     - `*.assoc.txt`: This file contains the results of the association test.
+    - `boxplot_*_png`: Correlation of the individual covariates with the phenotypes
+    - `corrected_phenotypes.txt`: OLS corrected residuals of the phenotypes
+    - `fit_summary.txt`: Statistical summary of the regression
+    - `residuals.png`: Residuals distribution
 - `plots/`: This directory contains all visual results
     - `*_gwas_plot.png`: This file contains the plot of the association test results for all chromosomes.
     - `*_chr${x}_scatter.png`: These files contain the plots of the association test results for each chromosome `${x}`
