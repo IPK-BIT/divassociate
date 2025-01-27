@@ -47,34 +47,41 @@
                 },
                 "version": {
                     "type": "boolean",
-                    "description": "Print the version of the pipeline"
+                    "description": "Print the version of the pipeline",
+                    "hidden": true
                 },
                 "validate_params": {
                     "type": "boolean",
-                    "description": "Validate the input parameters"
+                    "description": "Validate the input parameters",
+                    "hidden": true
                 },
                 "email": {
                     "type": "string",
                     "description": "Email address to send the report to",
-                    "format": "email"
+                    "format": "email",
+                    "hidden": true
                 },
                 "email_on_fail": {
                     "type": "string",
                     "description": "Email address to send to on fail",
-                    "format": "email"
+                    "format": "email",
+                    "hidden": true
                 },
                 "plaintext_email": {
                     "type": "boolean",
-                    "description": "Send emails in plaintext"
+                    "description": "Send emails in plaintext",
+                    "hidden": true
                 },
                 "monochrome_logs": {
                     "type": "boolean",
-                    "description": "Disable ANSI colour codes in log output"
+                    "description": "Disable ANSI colour codes in log output",
+                    "hidden": true
                 },
                 "hook_url": {
                     "type": "string",
                     "description": "Slack webhook URL to send messages to",
-                    "format": "url"
+                    "format": "url",
+                    "hidden": true
                 }
             },
             "required": [
@@ -82,15 +89,6 @@
                 "samples",
                 "vcf",
                 "phenotypes"
-            ],
-            "hidden": [
-                "version",
-                "validate_params",
-                "email",
-                "email_on_fail",
-                "plaintext_email",
-                "monochrome_logs",
-                "hook_url"
             ]
         }
     },
