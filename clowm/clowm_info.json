@@ -2,8 +2,7 @@
     "inputParameters": [
       "vcf",
       "samples",
-      "phenotypes",
-      "covariates"
+      "phenotypes"
     ],
     "outputParameters": [
       "outdir"

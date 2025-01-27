@@ -82,6 +82,15 @@
                 "samples",
                 "vcf",
                 "phenotypes"
+            ],
+            "hidden": [
+                "version",
+                "validate_params",
+                "email",
+                "email_on_fail",
+                "plaintext_email",
+                "monochrome_logs",
+                "hook_url"
             ]
         }
     },
